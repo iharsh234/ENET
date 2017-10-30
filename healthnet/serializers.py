@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User, Group
 from rest_framework import serializers
 from healthnet.models import Score
-
+from django.forms.models import model_to_dict
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
 
@@ -26,6 +26,16 @@ class GroupSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class ScoreSerializer(serializers.HyperlinkedModelSerializer):
+    owner = serializers.SerializerMethodField('get_sr_price_func')
+
+    def get_sr_price_func(self, obj):
+        return model_to_dict(self.context['request'].user.account)
     class Meta:
         model = Score
-        fields = ('id', 'score','owner_name','game', 'updated')
+        fields = ('score','game','owner','id')
+        write_only_fields = ('score','game','owner')
+
+    def validate(self, validated_data):
+        if self.context['request'].method == 'POST':
+            validated_data['owner'] = self.context['request'].user.account
+            return validated_data

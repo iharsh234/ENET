@@ -35,7 +35,7 @@ from rest_framework.authtoken.serializers import AuthTokenSerializer
 from healthnet.serializers import ScoreSerializer, UserSerializer
 from healthnet.models import Score
 
-class ScoreAPI(ListCreateAPIView):
+class ScoreAPI(CreateAPIView):
     #authentication_classes = (authentication.TokenAuthentication,)
     #permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
@@ -46,7 +46,10 @@ class ScoreAPI(ListCreateAPIView):
         return queryset.order_by('-score')[0:5]
 
     def perform_create(self, serializer):
-        serializer.save(owner=self.request.user.account)
+        import pdb; pdb.set_trace()
+        serializer.validated_data['owner'] = self.request.user.account
+        return super(ScoreAPI, self).perform_create(serializer)
+        #serializer.save(owner=self.request.user.account)
 
 class UserAPI(DestroyAPIView, CreateAPIView):
     queryset = User.objects.all()
