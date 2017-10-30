@@ -4,7 +4,7 @@ from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 
-from healthnet.models import Account, Profile, Hospital, Admission, MedicalInfo, MedicalTest, US_STATES, Appointment, Message
+from healthnet.models import Account, Profile, Hospital, Admission, MedicalInfo, MedicalTest, US_STATES, Appointment, Message, Score
 
 
 def validate_username_available(username):
@@ -391,6 +391,29 @@ class MedTestForm(BasicForm):
             image1=self.cleaned_data['image1'],
             image2=self.cleaned_data['image2'],
         )
+
+
+
+class ScoreForm(BasicForm):
+    owner = forms.ModelChoiceField(queryset=Account.objects.filter(role=Account.ACCOUNT_PATIENT))
+    setup_field(owner)
+    game = forms.IntegerField(required=False)
+    setup_field(game)
+    score = forms.IntegerField(required=False)
+    setup_field(score)
+
+    def assign(self, medtest):
+        medtest.owner = self.cleaned_data['owner']
+        medtest.game = self.cleaned_data['game']
+        medtest.score = self.cleaned_data['score']
+
+    def generate(self):
+        return Score(
+            owner=self.cleaned_data['owner'],
+            game=self.cleaned_data['game'],
+            score=self.cleaned_data['score']
+        )
+
 
 
 class MedTestDisplayForm(BasicForm):

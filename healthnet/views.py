@@ -2,7 +2,7 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 
-from healthnet.models import Account, Profile, Action, MedicalInfo
+from healthnet.models import Account, Profile, Action, MedicalInfo, Score
 from healthnet import logger
 
 
@@ -78,5 +78,36 @@ def register_user(email, password, firstname, lastname, role, insurance=""):
     logger.log(Action.ACTION_ACCOUNT, "Account registered", account)
     return user
 
+
 def sanitize_js(string):
     return string.replace("\\", "\\\\").replace("'", "\\'")
+
+
+### DRF VIEW FOR API auth
+
+from django.contrib.auth.models import User, Group
+from rest_framework import viewsets
+from healthnet.serializers import UserSerializer, GroupSerializer, ScoreSerializer
+
+
+class UserViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows users to be viewed or edited.
+    """
+    queryset = User.objects.all().order_by('-date_joined')
+    serializer_class = UserSerializer
+
+
+class GroupViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows groups to be viewed or edited.
+    """
+    queryset = Group.objects.all()
+    serializer_class = GroupSerializer
+
+class ScoreViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows users to be viewed or edited.
+    """
+    queryset = Score.objects.all()
+    serializer_class = ScoreSerializer

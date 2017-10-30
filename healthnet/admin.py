@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from healthnet.models import Location, Hospital, Account, Profile, Action, Appointment, MedicalTest
+from healthnet.models import Location, Hospital, Account, Profile, Action, Appointment, MedicalTest, Score
 
 
 class LocationAdmin(admin.ModelAdmin):
@@ -96,3 +96,4 @@ class MedicalTestAdmin(admin.ModelAdmin):
 
 
 admin.site.register(MedicalTest, MedicalTestAdmin)
+admin.site.register(Score)

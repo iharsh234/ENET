@@ -13,6 +13,17 @@ from healthnet import views_prescription
 from healthnet import views_profile
 from healthnet import views_medicalInfo
 
+from rest_framework import routers
+from django.conf.urls import include
+from rest_framework.urlpatterns import format_suffix_patterns
+from healthnet.api import ScoreAPI, UserAPI, GetAuthToken
+router = routers.DefaultRouter()
+router.register(r'users', views.UserViewSet)
+router.register(r'groups', views.GroupViewSet)
+router.register(r'scores', views.ScoreViewSet)
+
+
+
 
 urlpatterns = patterns(
     '',
@@ -57,4 +68,18 @@ urlpatterns = patterns(
     url(r'^medicalinfo/list/$', views_medicalInfo.list_view, name='medicalinfo/list'),
     url(r'^medicalinfo/update/$', views_medicalInfo.update_view, name='medicalinfo/update'),
     url(r'^medicalinfo/patient/$', views_medicalInfo.update_view, name='medicalinfo/patient'),
+
+    url(r'^', include(router.urls, namespace='api')),
+    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+
+    url(r'^api/score', ScoreAPI.as_view()),
+    # url(r'^api/user/(?P<pk>\d+)/$', UserAPI.as_view()),
+    # url(r'^api/user', UserAPI.as_view()),
+    # url(r'^api/getauthtoken', GetAuthToken.as_view()),
+
+    url(r'^score/list/$', views_profile.list_view, name='score/list'),
+    url(r'^score/new/$', views_profile.new_view, name='score/new'),
+
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+#urlpatterns = format_suffix_patterns(urlpatterns)
