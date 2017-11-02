@@ -113,5 +113,6 @@ USE_TZ = True
 
 LOGIN_URL = '/'
 STATIC_URL = '/static/'
-STATIC_ROOT = ''
+PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
+STATIC_ROOT = os.path.join(PROJECT_DIR, 'static')
 TEMPLATE_DIRS = [os.path.join(BASE_DIR, 'templates')]
