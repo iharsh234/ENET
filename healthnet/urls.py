@@ -21,7 +21,7 @@ router = routers.DefaultRouter()
 router.register(r'users', views.UserViewSet)
 router.register(r'groups', views.GroupViewSet)
 router.register(r'scores', views.ScoreViewSet)
-
+from rest_framework.authtoken import views as vw
 
 
 
@@ -72,13 +72,14 @@ urlpatterns = patterns(
     url(r'^', include(router.urls, namespace='api')),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 
-    url(r'^api/score', ScoreAPI.as_view()),
+    # url(r'^api/score', ScoreAPI.as_view()),
     # url(r'^api/user/(?P<pk>\d+)/$', UserAPI.as_view()),
     # url(r'^api/user', UserAPI.as_view()),
-    # url(r'^api/getauthtoken', GetAuthToken.as_view()),
-
+    url(r'^getauthtoken', GetAuthToken.as_view()),
+    url(r'^api-token-auth/', vw.obtain_auth_token),
     url(r'^score/list/$', views_profile.list_view, name='score/list'),
     url(r'^score/new/$', views_profile.new_view, name='score/new'),
+    url(r'^score/line/$', views_profile.chart_view),
 
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

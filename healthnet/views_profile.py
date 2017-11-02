@@ -139,3 +139,114 @@ def update_view(request):
             form = ProfileForm(profile.get_populated_fields())
     template_data['form'] = form
     return render(request, 'healthnet/profile/update.html', template_data)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+### CHART OF PROGRESS
+
+from django.shortcuts import render
+from django.shortcuts import render_to_response
+from django.views.generic import TemplateView
+from chartit import DataPool, Chart
+
+# class LineChartView(TemplateView):
+#     template_name = 'line.html'
+#     #import pdb; pdb.set_trace()
+#     def get_ds(self):
+#         return DataPool(
+#             series=[{'options': {
+#                 'source': Score.objects.all()},
+#                 'terms': [
+#                 'game',
+#                 'score',
+#                 'updated']}
+#             ])
+#
+#     def get_water_chart(self):
+#         return Chart(
+#             datasource=self.get_ds(),
+#             series_options=[{'options': {
+#                 'type': 'line',
+#                 'stacking': False},
+#                 'terms': {
+#                 'updated': [
+#                     'game',
+#                     'score']
+#             }}],
+#             chart_options={'title': {
+#                 'text': 'User Game Data of Lazy eye HTS'},
+#                 'xAxis': {
+#                 'title': {
+#                     'text': 'Time at play'}}})
+#
+#     def get_context_data(self, **kwargs):
+#         context = super(LineChartView, self).get_context_data(**kwargs)
+#         context['weatherchart'] = self.get_water_chart()
+#         #import pdb; pdb.set_trace()
+#         return context
+
+
+
+
+
+def chart_view(request):
+    authentication_result = views.authentication_check(
+        request,
+        [Account.ACCOUNT_PATIENT, Account.ACCOUNT_NURSE, Account.ACCOUNT_DOCTOR]
+    )
+    if authentication_result is not None: return authentication_result
+    # Get the template data from the session
+    #template_data = dict()
+    # Proceed with the rest of the view
+    #appointment.parse_appointment_cancel(request, template_data)  # Parse appointment cancelling
+    if request.user.account.role == Account.ACCOUNT_PATIENT:
+        score = Score.objects.filter(owner=request.user.account)
+    else:
+        score = Score.objects.all()
+    GAME = ''
+    tle = 'User Game Data'
+    if request.method == 'GET' and 'q' in request.GET:
+        q = request.GET['q']
+        if q is not None:
+            score = score.filter(game=q)
+            GAME = q
+            tle = 'User Game data in game %s' %(q)
+
+    d = DataPool(
+            series=[{'options': {
+                'source': score},
+                'terms': [
+                #'game',
+                'score',
+                'updated']}
+            ])
+
+    chat = Chart(
+            datasource=d,
+            series_options=[{'options': {
+                'type': 'line',
+                'stacking': False},
+                'terms': {
+                'updated': [
+                    #'game',
+                    'score']
+            }}],
+            chart_options={'title': {
+                'text': tle},
+                'xAxis': {
+                'title': {
+                    'text': 'Time at play'}}})
+    #import pdb; pdb.set_trace()
+    #template_data['weatherchart'] = chat
+    return render(request, 'line.html', {'weatherchart':chat})

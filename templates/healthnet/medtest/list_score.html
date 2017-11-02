@@ -4,11 +4,8 @@
 <!-- {% block sidebar_medtest %}active{% endblock %} -->
 {% block body_header %}
     View Your Game Scores
-    {% if user.account.role == 30 %}
-        <br>
-        <!-- <a class="btn btn-success btn-sm" href="/medtest/upload/" role="button">Upload Medical Test</a> -->
-    {% endif %}
-{% endblock %}
+    <a class="btn btn-success btn-sm" href="/score/new/" role="button">Add Score</a>
+    {% endblock %}
 {% block body %}
     <table id="datatable" class="table table-hover table-striped table-bordered">
         <thead>
@@ -17,8 +14,8 @@
             <th>Score</th>
             <!-- <th>Remarks</th> -->
             <!-- <th>Date</th>
-            <th>Status</th>
-            <th data-defaultsort='disabled'>Options</th> -->
+            <th>Status</th>-->
+            <!-- <th data-defaultsort='disabled'>Options</th> -->
         </thead>
         <tbody>
             {% for test in query %}

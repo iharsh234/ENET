@@ -1,0 +1,26 @@
+### EXAMPLES
+
+## Authentication using api
+curl -X POST http://127.0.0.1:8000/api-token-auth/ -d '{"username":"cd@cd.com", "password":"b"}' -H "Content-Type: application/json"
+if success:
+{"token":"855c072df0486cfebed47acc67abe3f7470d46a8"}
+else:
+{"non_field_errors":["Unable to log in with provided credentials."]}
+
+
+#Adding Score using token from authentication
+curl -X POST http://127.0.0.1:8000/scores/ -d '{"game":"1", "score":"10"}' -H "Content-Type: application/json" -H "Authorization: Token 855c072df0486cfebed47acc67abe3f7470d46a8"
+if success:
+{"score":10,"game":1,"owner":{"user":5,"id":3,"profile":3,"role":10},"id":11}
+else:
+{"detail":"Invalid token."}
+
+
+
+
+
+## FORMAT OF API REQUEST
+# Auth
+curl -X POST http://<base-url>/api-token-auth/ -d '{"username":"<username>", "password":"<password>"}' -H "Content-Type: application/json"
+# Score
+curl -X POST http://127.0.0.1:8000/scores/ -d '{"game":"<game-id>", "score":"<score>"}' -H "Content-Type: application/json" -H "Authorization: Token <your_token_here>"
