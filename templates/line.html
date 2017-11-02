@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% load chartit %}
+{% block title %}Chart Here{% endblock %}
+
+{% block body_header %}
+    View Chart
+{% endblock %}
+
+{% block body %}
+    {% block javascript %}
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+        <script src="http://code.highcharts.com/highcharts.js"></script>
+    {% endblock %}
+    <select name="Games" onchange="location = this.value;">
+         <option value=""> ALL GAME</option>
+         {% for i in "xxxxxxxxxx" %}
+            {% if forloop.counter0 != 0 %}
+                <option value='?q={{ forloop.counter0 }}' >GAME  {{ forloop.counter0 }} </option>
+            {% endif %}
+         {% endfor %}
+    </select>
+    <div class="container">
+        <div class="row">
+            <div id="gratis">{{ weatherchart|load_charts:"gratis" }}</div>
+        </div>
+    </div>
+{% endblock %}
