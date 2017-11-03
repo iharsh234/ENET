@@ -1,0 +1,8 @@
+Django==1.8
+django-chartit==0.2.9
+django-extensions==1.9.7
+djangorestframework==3.3.0
+pkg-resources==0.0.0
+pytz==2017.3
+six==1.11.0
+typing==3.6.2
