@@ -3,7 +3,7 @@
     <thead>
         <th>Game</th>
         <th>Score</th>
-        <th>Remarks</th>
+        <th style="display: none;">Remarks</th >
         <th style="display:none;">Timestamp</th>
     </thead>
     <tbody>
@@ -12,7 +12,7 @@
                 <td>{{ message.game }}</td>
                 <td>{{ message.score }}</td>
                 <td>
-                    <script type="text/javascript">
+                  <script type="text/javascript">
                         function proxy{{ message.pk }}() {
                             configureModal(
                                     '{{ message.sender.pk }}',
@@ -24,13 +24,13 @@
                         };
                     </script>
                     <form id="confirm-modal-action" action="./" method="post">{% csrf_token %}
-                        <input id="confirm-modal-hidden" type="hidden" name="pk" value="{{ message.pk }}">
-                        <a class="btn btn-success btn-sm" href="/message/new/?pk={{ message.sender.pk }}" role="button">Reply</a>
-                        <button onclick="proxy{{ message.pk }}()" type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#read-modal">Read</button>
+                        <input id="confirm-modal-hidden" type="hidden" name="pk" value="{{ message.pk }}" style="display: none;">
+                        <a class="btn btn-success btn-sm" href="/message/new/?pk={{ message.sender.pk }}" role="button" style="display: none;">Reply</a>
+                        <button onclick="proxy{{ message.pk }}()" type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#read-modal" style="display: none;" >Read</button>
                         {% if message.sender == user.account and message.sender_deleted %}
                         {% elif message.target == user.account and message.target_deleted %}
                         {% else %}
-                            <input id="confirm-modal-submit" class="btn btn-danger btn-sm" type="submit" name="delete" value="Archive"/>
+                            <input id="confirm-modal-submit" class="btn btn-danger btn-sm" type="submit" name="delete" value="Archive"/ style="display: none;">
                         {% endif %}
                     </form>
                 </td>

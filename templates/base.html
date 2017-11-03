@@ -21,6 +21,18 @@
     <script src="//cdn.datatables.net/plug-ins/1.10.7/integration/bootstrap/3/dataTables.bootstrap.js"></script>
 </head>
 <body>
+  <script>
+    window.alert = (function() {
+      var nativeAlert = window.alert;
+      return function(message) {
+          window.alert = nativeAlert;
+          message.indexOf("DataTables warning") === 0 ?
+              console.warn(message) :
+              nativeAlert(message);
+      }
+    })();
+  </script>
+
     <nav class="navbar navbar-default navbar-static-top">
         <div class="container-fluid">
             <div class="navbar-header">
