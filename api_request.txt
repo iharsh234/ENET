@@ -24,3 +24,18 @@ else:
 curl -X POST http://<base-url>/api-token-auth/ -d '{"username":"<username>", "password":"<password>"}' -H "Content-Type: application/json"
 # Score
 curl -X POST http://127.0.0.1:8000/scores/ -d '{"game":"<game-id>", "score":"<score>"}' -H "Content-Type: application/json" -H "Authorization: Token <your_token_here>"
+
+
+
+
+
+
+
+
+(doc) harsh@harsh-PC:~/Desktop/ENET_changed_score$ curl -X POST http://eyenet.pythonanywhere.com/api-token-auth/ -d '{"username":"p@p.com", "password":"a"}' -H "Content-Type: application/json"
+{"token":"521f1427d332cbc4117e8eed555bb61cac04bbb7"}
+
+
+ curl -X POST http://eyenet.pythonanywhere.com/scores/ -d '{"game":"6", "score":"179"}' -H "Content-Type: application/json" -H "Authorization: Token 521f1427d332cbc4117e8eed555bb61cac04bbb7"
+{"score":179,"game":6,"owner":{"user":2,"profile":2,"role":10,"id":2},"id":16}(doc) 
+
