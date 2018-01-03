@@ -42,7 +42,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="/{% block brand_link %}profile/{% endblock %}"><i class="fa fa-hospital-o"></i>  HealthNet</a>
+                <a class="navbar-brand" href="/{% block brand_link %}profile/{% endblock %}"><i class="fa fa-hospital-o"></i>  WinV </a>
             </div>
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav navbar-right">
@@ -87,7 +87,7 @@
                     <ul class="nav navbar-nav">
                         {% if user.account.role >= 0 %}
                             <li class="{% block sidebar_profile %}{% endblock %}"><a href="/profile/">Profile<i class="pull-right fa fa-user"></i></a></li>
-                            <li class="{% block sidebar_score %}{% endblock %}"><a href="/score/list/">Game<i class="pull-right fa fa-envelope"></i></a></li>
+                            <li class="{% block sidebar_score %}{% endblock %}"><a href="/score/list/">Game<i class="pull-right fa fa-gamepad"></i></a></li>
                             <li class="{% block sidebar_message %}{% endblock %}"><a href="/message/list/">Messages<i class="pull-right fa fa-envelope"></i></a></li>
                         {% endif %}
                         {% if user.account.role >= 10 and user.account.role < 40 %}
