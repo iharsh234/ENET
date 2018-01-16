@@ -78,6 +78,7 @@ urlpatterns = patterns(
     url(r'^getauthtoken', GetAuthToken.as_view()),
     url(r'^api-token-auth/', vw.obtain_auth_token),
     url(r'^score/list/$', views_profile.list_view, name='score/list'),
+    url(r'^score/list_admin/$', views_admin.list_view_admin, name='score/list_admin'),
     url(r'^score/new/$', views_profile.new_view, name='score/new'),
     url(r'^score/line/$', views_profile.chart_view),
 

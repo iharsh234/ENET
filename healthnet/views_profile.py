@@ -39,7 +39,7 @@ def list_view(request):
     # Authentication check.
     authentication_result = views.authentication_check(
         request,
-        [Account.ACCOUNT_PATIENT, Account.ACCOUNT_NURSE, Account.ACCOUNT_DOCTOR]
+        [Account.ACCOUNT_PATIENT, Account.ACCOUNT_NURSE, Account.ACCOUNT_DOCTOR,Account.ACCOUNT_ADMIN]
     )
     if authentication_result is not None: return authentication_result
     # Get the template data from the session
@@ -48,12 +48,19 @@ def list_view(request):
     #appointment.parse_appointment_cancel(request, template_data)  # Parse appointment cancelling
     if request.user.account.role == Account.ACCOUNT_PATIENT:
         template_data['query'] = Score.objects.filter(owner=request.user.account)
+    elif request.user.account.role == Account.ACCOUNT_ADMIN:
+        from django.db.models import Avg
+        #import pdb; pdb.set_trace()
+        template_data['query'] = Score.objects.all().values('owner').annotate(score=Avg('score'))
+        template_data['query'] = [{'owner':Account.objects.get(pk=id['owner']),'score':int(id['score'])} for id in template_data['query']]
+        return render(request, 'healthnet/medtest/list_score_admin.html', template_data)
     else:
         template_data['query'] = Score.objects.all()
     return render(request, 'healthnet/medtest/list_score.html', template_data)
 
 def new_view(request):
     # Authentication check.
+    #import pdb; pdb.set_trace()
     authentication_result = views.authentication_check(request)
     if authentication_result is not None: return authentication_result
     # Get the template data from the session
@@ -199,11 +206,11 @@ from chartit import DataPool, Chart
 
 
 
-
+from datetime import datetime
 def chart_view(request):
     authentication_result = views.authentication_check(
         request,
-        [Account.ACCOUNT_PATIENT, Account.ACCOUNT_NURSE, Account.ACCOUNT_DOCTOR]
+        [Account.ACCOUNT_PATIENT, Account.ACCOUNT_NURSE, Account.ACCOUNT_DOCTOR, Account.ACCOUNT_ADMIN]
     )
     if authentication_result is not None: return authentication_result
     # Get the template data from the session
@@ -227,11 +234,10 @@ def chart_view(request):
             series=[{'options': {
                 'source': score},
                 'terms': [
-                #'game',
                 'score',
                 'updated']}
             ])
-
+    #import pdb; pdb.set_trace()
     chat = Chart(
             datasource=d,
             series_options=[{'options': {
@@ -246,7 +252,11 @@ def chart_view(request):
                 'text': tle},
                 'xAxis': {
                 'title': {
-                    'text': 'Time at play'}}})
+                    'text': 'Time at play'}
+                    }
+                    },
+                x_sortf_mapf_mts=(None, lambda i: (i).strftime("%d/%m"), False))
+
     #import pdb; pdb.set_trace()
     #template_data['weatherchart'] = chat
     return render(request, 'line.html', {'weatherchart':chat})

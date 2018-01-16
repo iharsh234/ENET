@@ -8,7 +8,7 @@ from django.db.utils import IntegrityError
 
 from healthnet.forms import EmployeeRegisterForm, ImportForm, ExportForm, HospitalForm, StatisticsForm
 
-from healthnet.models import Account, Action, Hospital, Location, Statistics
+from healthnet.models import Account, Action, Hospital, Location, Statistics, Score
 from healthnet import logger
 from healthnet import views
 
@@ -24,14 +24,43 @@ def users_view(request):
         pk = request.POST['pk']
         role = request.POST['role']
         account = Account.objects.get(pk=pk)
+        del_ = request.POST.get('del')
+        #import pdb; pdb.set_trace()
         if account is not None:
-            account.role = role
-            account.save()
-            logger.log(Action.ACTION_ADMIN, 'Admin modified ' + account.user.username + "'s role", request.user.account)
-            template_data['alert_success'] = "Updated " + account.user.username + "'s role!"
+            if del_:
+                account.delete()
+                template_data['alert_danger'] = "Deleted " + account.user.username + "!!"
+            else:
+                account.role = role
+                account.save()
+                logger.log(Action.ACTION_ADMIN, 'Admin modified ' + account.user.username + "'s role", request.user.account)
+                template_data['alert_success'] = "Updated " + account.user.username + "'s role!"
+    # else:
+    #     pk = request.GET['pk']
+    #     account = Account.objects.get(pk=pk)
+    #     account.delete()
     # Parse search sorting
     template_data['query'] = Account.objects.all().order_by('-role')
     return render(request, 'healthnet/admin/users.html', template_data)
+
+
+
+def list_view_admin(request):
+    # Authentication check.
+    authentication_result = views.authentication_check(request, [Account.ACCOUNT_ADMIN])
+    if authentication_result is not None: return authentication_result
+    # Get the template data from the session
+    template_data = views.parse_session(request)
+    #import pdb; pdb.set_trace()
+    #if request.method == 'get':
+    try:
+        pk = request.GET.get('own')
+        owner=Account.objects.get(pk=pk)
+        #import pdb; pdb.set_trace()
+        template_data['query'] = Score.objects.filter(owner=owner)
+        return render(request, 'healthnet/medtest/list_score.html', template_data)
+    except:pass
+    return render(request, 'healthnet/medtest/list_score.html', template_data)
 
 
 def activity_view(request):
