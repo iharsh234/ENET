@@ -223,12 +223,19 @@ def chart_view(request):
         score = Score.objects.all()
     GAME = ''
     tle = 'User Game Data'
+    #from django.core.urlresolvers import resolve
+    current_url = request.session['owner']#resolve(request.path_info).url_name
+    #import pdb; pdb.set_trace()
+
     if request.method == 'GET' and 'q' in request.GET:
         q = request.GET['q']
         if q is not None:
             score = score.filter(game=q)
             GAME = q
             tle = 'User Game data in game %s' %(q)
+    if current_url:
+        q = current_url
+        score = score.filter(owner=q)
 
     d = DataPool(
             series=[{'options': {

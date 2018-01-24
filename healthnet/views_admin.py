@@ -57,6 +57,7 @@ def list_view_admin(request):
         pk = request.GET.get('own')
         owner=Account.objects.get(pk=pk)
         #import pdb; pdb.set_trace()
+        request.session['owner'] = owner
         template_data['query'] = Score.objects.filter(owner=owner)
         return render(request, 'healthnet/medtest/list_score.html', template_data)
     except:pass
