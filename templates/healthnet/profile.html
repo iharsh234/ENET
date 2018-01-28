@@ -78,6 +78,7 @@
             </div>
         <div class="panel-footer"><a href="/message/list/">For a more detailed message view, click here</a></div>
         </div> -->
+        {% if user.account.role == 10 %}
         <div class="panel panel-primary">
             <div class="panel-heading">Recent Scores</div>
             <div class="panel-body">
@@ -85,4 +86,5 @@
             </div>
         <div class="panel-footer"><a href="/score/list/">For a more detailed score view, click here</a></div>
         </div>
+        {% endif %}
 {% endblock %}

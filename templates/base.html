@@ -87,23 +87,24 @@
                     <ul class="nav navbar-nav">
                         {% if user.account.role >= 0 %}
                             <li class="{% block sidebar_profile %}{% endblock %}"><a href="/profile/">Profile<i class="pull-right fa fa-user"></i></a></li>
-                            <li class="{% block sidebar_score %}{% endblock %}"><a href="/score/list/">Game<i class="pull-right fa fa-gamepad"></i></a></li>
                             <li class="{% block sidebar_message %}{% endblock %}"><a href="/message/list/">Messages<i class="pull-right fa fa-envelope"></i></a></li>
+                            {% if user.account.role < 20 or user.account.role >= 40 %} <li class="{% block sidebar_score %}{% endblock %}"><a href="/score/list/">Game Performance <i class="pull-right fa fa-gamepad"></i></a></li> {% endif %}
                         {% endif %}
                         {% if user.account.role >= 10 and user.account.role < 40 %}
                             <li class="{% block sidebar_appointment %}{% endblock %}"><a href="/appointment/list/">Appointments<i class="pull-right fa fa-calendar"></i></a></li>
                             <li class="{% block sidebar_medicalinfo %}{% endblock %}"><a href="{% if user.account.role == 10 %}/medicalinfo/patient/{% else %}/medicalinfo/list/{% endif %}">Medical Info<i class="pull-right fa fa-heartbeat"></i></a></li>
-                            <li class="{% block sidebar_medtest %}{% endblock %}"><a href="/medtest/list">Medical Tests<i class="pull-right fa fa-flask"></i></a></li>
-                            <li class="{% block sidebar_prescription %}{% endblock %}"><a href="/prescription/list/">Prescriptions<i class="pull-right fa fa-file-text"></i></a></li>
+                            <!-- <li class="{% block sidebar_medtest %}{% endblock %}"><a href="/medtest/list">Medical Tests<i class="pull-right fa fa-flask"></i></a></li> -->
+                            <!-- <li class="{% block sidebar_prescription %}{% endblock %}"><a href="/prescription/list/">Recommendations<i class="pull-right fa fa-file-text"></i></a></li> -->
                         {% endif %}
                         {% if user.account.role >= 20 and user.account.role < 40 %}
+
                             <li class="{% block sidebar_admission %}{% endblock %}"><a href="/admission/list/">Admitted Patients<i class="pull-right fa fa-ambulance"></i></a></li>
                         {% endif %}
                         {% if user.account.role == 40 %}
                             <li class="{% block sidebar_admin_users %}{% endblock %}"><a href="/admin/users/">Manage Users<i class="pull-right fa fa-users"></i></a></li>
                             <li class="{% block sidebar_admin_activity %}{% endblock %}"><a href="/admin/activity/">View Activity<i class="pull-right fa fa-eye"></i></a></li>
                             <li class="{% block sidebar_admin_statistics %}{% endblock %}"><a href="/admin/statistics/">View Statistics<i class="pull-right fa fa-bar-chart"></i></a></li>
-                            <li class="{% block sidebar_admin_import %}{% endblock %}"><a href="/admin/import/">CSV Management<i class="pull-right fa fa-upload"></i></a></li>
+                            <li class="{% block sidebar_admin_import %}{% endblock %}"><a href="/admin/import/"> Import/Export <i class="pull-right fa fa-upload"></i></a></li>
                         {% endif %}
                     </ul>
                 </div>
