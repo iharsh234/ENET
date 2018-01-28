@@ -47,7 +47,7 @@ def users_view(request):
 
 def list_view_admin(request):
     # Authentication check.
-    authentication_result = views.authentication_check(request, [Account.ACCOUNT_ADMIN])
+    authentication_result = views.authentication_check(request, [Account.ACCOUNT_ADMIN, Account.ACCOUNT_DOCTOR])
     if authentication_result is not None: return authentication_result
     # Get the template data from the session
     template_data = views.parse_session(request)

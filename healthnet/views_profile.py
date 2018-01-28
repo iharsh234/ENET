@@ -224,7 +224,8 @@ def chart_view(request):
     GAME = ''
     tle = 'User Game Data'
     #from django.core.urlresolvers import resolve
-    current_url = request.session['owner']#resolve(request.path_info).url_name
+    try:current_url = request.session['owner']#resolve(request.path_info).url_name
+    except:current_url=None
     #import pdb; pdb.set_trace()
 
     if request.method == 'GET' and 'q' in request.GET:

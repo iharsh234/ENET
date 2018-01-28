@@ -3,7 +3,7 @@ from datetime import date
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
-
+from healthnet.views import *
 from healthnet.models import Account, Profile, Hospital, Admission, MedicalInfo, MedicalTest, US_STATES, Appointment, Message, Score
 
 
@@ -300,6 +300,24 @@ class AdmissionForm(BasicForm):
             reason=self.cleaned_data['reason'],
             hospital=self.cleaned_data['hospital'],
             timestamp=self.cleaned_data['timestamp'],
+        )
+
+class AdmitCreateForm(BasicForm):
+    email = forms.CharField()
+    setup_field(email, 'Enter Email ID')
+    firstname = forms.CharField()
+    setup_field(firstname, 'Enter First Name')
+    lastname = forms.CharField()
+    setup_field(lastname, 'Enter Last Name')
+    hospital = forms.ModelChoiceField(queryset=Hospital.objects.all())
+    setup_field(hospital)
+
+    def jugaad(self):
+        return register_admit_user(
+            email=self.cleaned_data['email'],
+            firstname=self.cleaned_data['firstname'],
+            lastname=self.cleaned_data['lastname'],
+            hospital=self.cleaned_data['hospital'],
         )
 
 

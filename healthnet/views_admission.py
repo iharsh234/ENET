@@ -3,7 +3,7 @@ from datetime import datetime
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 
-from healthnet.forms import AdmissionForm
+from healthnet.forms import AdmissionForm, AdmitCreateForm
 from healthnet.models import Account, Admission, Action
 from healthnet import logger
 from healthnet import views
@@ -29,11 +29,11 @@ def admit_view(request):
         default['timestamp'] = datetime.now().strftime("%Y-%m-%d %H:%M")
     request.POST._mutable = True
     request.POST.update(default)
-    form = AdmissionForm(request.POST)
+    form = AdmitCreateForm(request.POST)
     if request.method == 'POST':
         if form.is_valid():
-            admission = form.generate()
-            admission.save()
+            admission = form.jugaad()
+            #admission.save()
             logger.log(Action.ACTION_ADMISSION, 'Admitted Patient', request.user.account)
             form = AdmissionForm(default)  # Clean the form when the page is redisplayed
             form.clear_errors()

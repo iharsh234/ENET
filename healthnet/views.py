@@ -1,8 +1,8 @@
 from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
-
-from healthnet.models import Account, Profile, Action, MedicalInfo, Score
+import random, string
+from healthnet.models import Account, Profile, Action, MedicalInfo, Score, Admission
 from healthnet import logger
 
 
@@ -77,6 +77,41 @@ def register_user(email, password, firstname, lastname, role, insurance=""):
     medical_info.save()
     logger.log(Action.ACTION_ACCOUNT, "Account registered", account)
     return user
+
+def register_admit_user(email, firstname , lastname, hospital):
+    password = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(8))
+    insurance = password
+    role = Account.ACCOUNT_PATIENT
+    user = User.objects.create_user(
+        email.lower(),
+        email.lower(),
+        password
+    )
+    profile = Profile(
+        firstname=firstname,
+        lastname=lastname,
+        insurance=insurance,
+    )
+    profile.save()
+    account = Account(
+        role=role,
+        profile=profile,
+        user=user
+    )
+    account.save()
+    medical_info = MedicalInfo(
+        account=account
+    )
+    medical_info.save()
+    admission = Admission(
+        account=account,
+        hospital=hospital
+    )
+    admission.save()
+    logger.log(Action.ACTION_ACCOUNT, "Account registered", account)
+    return user
+
+
 
 
 def sanitize_js(string):
