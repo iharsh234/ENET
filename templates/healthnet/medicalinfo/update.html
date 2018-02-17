@@ -6,4 +6,10 @@
 {% block body %}
     <p class="lead">Make changes to your medical info and click '{{ form_button }}' when finished.</p>
     {% include "singleform.html" %}
+    <!-- {% for value, text in form.providers.field.choices %}
+        <div class="ui slider checkbox">
+          <input id="id_providers_{{ forloop.counter0 }}" name="{{ form.providers.name }}" type="checkbox" value="{{ value }}"{% if value in checked_providers %} checked="checked"{% endif %}>
+          <label>{{ text }}</label>
+        </div>
+    {% endfor %} -->
 {% endblock %}

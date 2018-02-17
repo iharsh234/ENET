@@ -102,6 +102,7 @@
                         {% endif %}
                         {% if user.account.role == 40 %}
                             <li class="{% block sidebar_admin_users %}{% endblock %}"><a href="/admin/users/">Manage Users<i class="pull-right fa fa-users"></i></a></li>
+                            <li class="{% block sidebar_admin_users_doctor %}{% endblock %}"><a href="/admin/users_doctor/">Manage Doctors<i class="pull-right fa fa-users"></i></a></li>
                             <li class="{% block sidebar_admin_activity %}{% endblock %}"><a href="/admin/activity/">View Activity<i class="pull-right fa fa-eye"></i></a></li>
                             <li class="{% block sidebar_admin_statistics %}{% endblock %}"><a href="/admin/statistics/">View Statistics<i class="pull-right fa fa-bar-chart"></i></a></li>
                             <li class="{% block sidebar_admin_import %}{% endblock %}"><a href="/admin/import/"> Import/Export <i class="pull-right fa fa-upload"></i></a></li>

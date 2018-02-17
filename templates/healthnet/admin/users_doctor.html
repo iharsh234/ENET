@@ -1,9 +1,9 @@
 {% extends "base.html" %}
 {% load app_filters %}
 {% block title %}Manage Users{% endblock %}
-{% block sidebar_admin_users %}active{% endblock %}
+{% block sidebar_admin_users_doctor %}active{% endblock %}
 {% block body_header %}
-    Manage Registered HealthNet Users
+    Manage Registered HealthNet Doctors
     <br>
     <a class="btn btn-success btn-sm" href="/admin/createemployee/" role="button">Add Employee</a>
 {% endblock %}
@@ -15,6 +15,7 @@
             <th>First name</th>
             <th>Last name</th>
             <th>Role</th>
+            <th>Allowed Patient</th>
         </thead>
         <tbody>
             {% for account in query %}
@@ -45,6 +46,7 @@
                             <input class="btn btn-danger btn-primary" method="GET" type="submit" onclick="return clicked();"  data-toggle="modal" data-target="#form-modal" value="Delete" name="del"/>
                         </form>
                     </td>
+                    <td>{{ account.profile.limit_users }}</td>
                 </tr>
             {% endfor %}
         </tbody>
