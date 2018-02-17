@@ -273,6 +273,7 @@ class EmployeeRegisterForm(BasicForm):
         return cleaned_data
 
 
+
 class AdmissionForm(BasicForm):
     reason = forms.ChoiceField(required=True, choices=Admission.ADMISSIONREASON)
     setup_field(reason, 'Enter reason of admission')
@@ -303,6 +304,8 @@ class AdmissionForm(BasicForm):
         )
 
 class AdmitCreateForm(BasicForm):
+    reason = forms.ChoiceField(required=True, choices=Admission.ADMISSIONREASON)
+    setup_field(reason, 'Enter reason of admission')
     email = forms.CharField()
     setup_field(email, 'Enter Email ID')
     firstname = forms.CharField()
@@ -314,6 +317,7 @@ class AdmitCreateForm(BasicForm):
 
     def jugaad(self):
         return register_admit_user(
+            reason=self.cleaned_data['reason'],
             email=self.cleaned_data['email'],
             firstname=self.cleaned_data['firstname'],
             lastname=self.cleaned_data['lastname'],

@@ -4,7 +4,7 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect
 
 from healthnet.forms import AdmissionForm, AdmitCreateForm
-from healthnet.models import Account, Admission, Action
+from healthnet.models import Account, Admission, Action, Profile
 from healthnet import logger
 from healthnet import views
 
@@ -30,10 +30,13 @@ def admit_view(request):
     request.POST._mutable = True
     request.POST.update(default)
     form = AdmitCreateForm(request.POST)
-    if request.method == 'POST':
+    # import pdb; pdb.set_trace()
+    if request.method == 'POST' and request.user.account.profile.limit_users > 0:
         if form.is_valid():
             admission = form.jugaad()
-            #admission.save()
+            dec = Profile.objects.get(pk=request.user.account.profile.pk)
+            dec.limit_users -= 1
+            dec.save()
             logger.log(Action.ACTION_ADMISSION, 'Admitted Patient', request.user.account)
             form = AdmissionForm(default)  # Clean the form when the page is redisplayed
             form.clear_errors()

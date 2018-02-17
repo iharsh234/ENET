@@ -40,10 +40,39 @@ def users_view(request):
     #     account = Account.objects.get(pk=pk)
     #     account.delete()
     # Parse search sorting
-    template_data['query'] = Account.objects.all().order_by('-role')
+    template_data['query'] = Account.objects.all().exclude(role=30).order_by('-role')
     return render(request, 'healthnet/admin/users.html', template_data)
 
 
+def users_view_doctor(request):
+    # Authentication check.
+    authentication_result = views.authentication_check(request, [Account.ACCOUNT_ADMIN])
+    if authentication_result is not None: return authentication_result
+    # Get the template data from the session
+    template_data = views.parse_session(request)
+    # Proceed with the rest of the view
+    if request.method == 'POST':
+        pk = request.POST['pk']
+        role = request.POST['role']
+        account = Account.objects.get(pk=pk)
+        del_ = request.POST.get('del')
+        #import pdb; pdb.set_trace()
+        if account is not None:
+            if del_:
+                account.delete()
+                template_data['alert_danger'] = "Deleted " + account.user.username + "!!"
+            else:
+                account.role = role
+                account.save()
+                logger.log(Action.ACTION_ADMIN, 'Admin modified ' + account.user.username + "'s role", request.user.account)
+                template_data['alert_success'] = "Updated " + account.user.username + "'s role!"
+    # else:
+    #     pk = request.GET['pk']
+    #     account = Account.objects.get(pk=pk)
+    #     account.delete()
+    # Parse search sorting
+    template_data['query'] = Account.objects.filter(role=30)
+    return render(request, 'healthnet/admin/users_doctor.html', template_data)
 
 def list_view_admin(request):
     # Authentication check.

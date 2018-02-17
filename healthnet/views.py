@@ -62,7 +62,7 @@ def register_user(email, password, firstname, lastname, role, insurance=""):
     profile = Profile(
         firstname=firstname,
         lastname=lastname,
-        insurance=insurance,
+        insurance=password,
     )
     profile.save()
     account = Account(
@@ -78,7 +78,7 @@ def register_user(email, password, firstname, lastname, role, insurance=""):
     logger.log(Action.ACTION_ACCOUNT, "Account registered", account)
     return user
 
-def register_admit_user(email, firstname , lastname, hospital):
+def register_admit_user(reason, email, firstname , lastname, hospital):
     password = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(8))
     insurance = password
     role = Account.ACCOUNT_PATIENT
@@ -104,6 +104,7 @@ def register_admit_user(email, firstname , lastname, hospital):
     )
     medical_info.save()
     admission = Admission(
+        reason=reason,
         account=account,
         hospital=hospital
     )

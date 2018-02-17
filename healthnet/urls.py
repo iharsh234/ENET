@@ -35,6 +35,7 @@ urlpatterns = patterns(
     url(r'^error/denied/$', views_home.error_denied_view, name='error/denied'),
 
     url(r'^admin/users/$', views_admin.users_view, name='admin/users'),
+    url(r'^admin/users_doctor/$', views_admin.users_view_doctor, name='admin/users_doctor'),
     url(r'^admin/activity/$', views_admin.activity_view, name='admin/activity'),
     url(r'^admin/statistics/$', views_admin.statistic_view, name='admin/statistics'),
     url(r'^admin/createemployee/$', views_admin.createemployee_view, name='admin/createemployee'),

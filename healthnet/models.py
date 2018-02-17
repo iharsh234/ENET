@@ -97,6 +97,7 @@ class Profile(models.Model):
     prefHospital = models.ForeignKey(Hospital, null=True, related_name="profiles_prefhospital")
     linkedEmergencyContact = models.ForeignKey('Account', null=True, related_name="profiles_contact")
     primaryCareDoctor = models.ForeignKey('Account', null=True, related_name="profiles_primarycaredoctor")
+    limit_users = models.IntegerField(default=20)
 
     def get_populated_fields(self):
         """
@@ -305,25 +306,13 @@ class Notification(models.Model):
 class Admission(models.Model):
 
     ADMISSIONREASON = (
-        ('Pneumonia', "Pneumonia"),
-        ('Congestive Heart Failure', "Congestive Heart Failure"),
-        ('Hardening of the arteries', "Hardening of the arteries"),
-        ('Heart Attack', "Heart Attack"),
-        ('Chronic Obstruction Lung Disease', "Chronic Obstruction Lung Disease"),
-        ('Stroke', "Stroke"),
-        ('Irregular Heartbeat', "Irregular Heartbeat"),
-        ('Congestive Heart Failure', "Congestive Heart Failure"),
-        ('Complications of procedures, devices, implants and grafts', "Complications of procedures, devices, implants and grafts"),
-        ('Mood Disorders', "Mood Disorders"),
-        ('Fluid and Electrolyte Disorders', "Fluid and Electrolyte Disorders"),
-        ('Urinary Infections', "Urinary Infections"),
-        ('Asthma', "Asthma"),
-        ('Diabetes mellitus with and without complications', "Diabetes mellitus with and without complications"),
-        ('Skin Infections', "Skin Infections"),
-        ('Gallbladder Disease', "Gallbladder Disease"),
-        ('Gastrointestinal Bleeding', "Gastrointestinal Bleeding"),
-        ('Hip Fracture', "Hip Fracture"),
-        ('Appendicitis', "Appendicitis"),
+        ('Isometric Refractive Amblyopia', "Isometric Refractive Amblyopia"),
+        ('Anisometric Refractive Amblyopia', "Anisometric Refractive Amblyopia"),
+        ('Strabismic', "Strabismic"),
+        ('Mixed Amblyopia', "Mixed Amblyopia"),
+        ('Deprivation Amblyopia', "Deprivation Amblyopia"),
+        ('Suppression', "Suppression"),
+        ('Visual perceptual skills deficiency', "Visual perceptual skills deficiency"),
         ('Other', "Other")
     )
 
@@ -346,6 +335,8 @@ class Prescription(models.Model):
     refill = models.IntegerField()
     active = models.BooleanField(default=True)
 
+
+from multiselectfield import MultiSelectField
 
 class MedicalInfo(models.Model):
     BLOOD = (
@@ -406,8 +397,8 @@ class MedicalInfo(models.Model):
         return "None"
 
     account = models.ForeignKey(Account, related_name="medicalinfo_account")
-    bloodType = models.CharField(max_length=10, choices=BLOOD)
-    vision = models.CharField(max_length=10,choices=VISION)
+    bloodType = models.CharField(max_length=10, choices=BLOOD, default="None")
+    vision = MultiSelectField(choices=VISION,max_choices=3)
     glass_prescription = models.CharField(max_length=10,choices=VISION)
     dv = models.CharField(max_length=10,choices=VISION)
     nv = models.CharField(max_length=10,choices=VISION)
