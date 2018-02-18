@@ -46,7 +46,14 @@
                             <input class="btn btn-danger btn-primary" method="GET" type="submit" onclick="return clicked();"  data-toggle="modal" data-target="#form-modal" value="Delete" name="del"/>
                         </form>
                     </td>
-                    <td>{{ account.profile.limit_users }}</td>
+                    <td data-value="{{ account.profile.limit_users }}">
+                      <form action="./" method="post" class="form-inline">{% csrf_token %}
+                          <input type="hidden" name="pk" value="{{ account.pk }}">
+                          <input type="hidden" name="pk2" value="{{ account.profile.pk }}">
+                          <input type="number" name="limits" class="form-control" value="{{ account.profile.limit_users }}"/>
+                          <input class="btn btn-primary" type="submit" value="Save"/>
+                      </form>
+                    </td>
                 </tr>
             {% endfor %}
         </tbody>
