@@ -147,3 +147,15 @@ class ScoreViewSet(viewsets.ModelViewSet):
     """
     queryset = Score.objects.all()
     serializer_class = ScoreSerializer
+
+
+
+## Update user
+
+from django.views.generic.edit import UpdateView
+from healthnet.models import Profile
+
+class ProfileUpdate(UpdateView):
+    model = Profile
+    fields = ['limit_users']
+    template_name_suffix = '_update_form'
