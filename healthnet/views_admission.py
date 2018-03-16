@@ -34,8 +34,11 @@ def admit_view(request):
     if request.method == 'POST' and request.user.account.profile.limit_users > 0:
         if form.is_valid():
             admission = form.jugaad()
+            admission.doctor = request.user.account
+            admission.save()
             dec = Profile.objects.get(pk=request.user.account.profile.pk)
             dec.limit_users -= 1
+            dec.totat_patients += 1
             dec.save()
             logger.log(Action.ACTION_ADMISSION, 'Admitted Patient', request.user.account)
             form = AdmissionForm(default)  # Clean the form when the page is redisplayed
@@ -70,5 +73,5 @@ def list_view(request):
                 template_data['alert_success'] = "The patient has been discharged."
             except Exception:
                 template_data['alert_danger'] = "Unable to discharge the requested patient. Please try again later."
-    template_data['query'] = Admission.objects.all()
+    template_data['query'] = Admission.objects.filter(doctor=request.user.account)
     return render(request, 'healthnet/admission/list.html', template_data)

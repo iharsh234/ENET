@@ -25,11 +25,14 @@ def users_view(request):
         role = request.POST['role']
         account = Account.objects.get(pk=pk)
         del_ = request.POST.get('del')
+        #pk2 = request.POST.get('pk2')
         #import pdb; pdb.set_trace()
         if account is not None:
             if del_:
-                account.delete()
-                template_data['alert_danger'] = "Deleted " + account.user.username + "!!"
+                pro = Profile.objects.get(pk=pk)
+                pro.hide = True
+                pro.save()
+                template_data['alert_danger'] = "Hidden " + account.user.username + "!!"
             else:
                 account.role = role
                 account.save()
@@ -40,7 +43,7 @@ def users_view(request):
     #     account = Account.objects.get(pk=pk)
     #     account.delete()
     # Parse search sorting
-    template_data['query'] = Account.objects.all().exclude(role=30).order_by('-role')
+    template_data['query'] = Account.objects.all().filter(profile__hide=False).exclude(role=30).order_by('-role')
     return render(request, 'healthnet/admin/users.html', template_data)
 
 
@@ -61,8 +64,10 @@ def users_view_doctor(request):
         #import pdb; pdb.set_trace()
         if account is not None:
             if del_:
-                account.delete()
-                template_data['alert_danger'] = "Deleted " + account.user.username + "!!"
+                pro = Profile.objects.get(pk=pk2)
+                pro.hide = True
+                pro.save()
+                template_data['alert_danger'] = "Hidden " + account.user.username + "!!"
             elif limit:
                 pro = Profile.objects.get(pk=pk2)
                 pro.limit_users = limit
@@ -79,7 +84,7 @@ def users_view_doctor(request):
     #     account = Account.objects.get(pk=pk)
     #     account.delete()
     # Parse search sorting
-    template_data['query'] = Account.objects.filter(role=30)
+    template_data['query'] = Account.objects.filter(role=30).filter(profile__hide=False)
     return render(request, 'healthnet/admin/users_doctor.html', template_data)
 
 

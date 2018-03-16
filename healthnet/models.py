@@ -98,6 +98,8 @@ class Profile(models.Model):
     linkedEmergencyContact = models.ForeignKey('Account', null=True, related_name="profiles_contact")
     primaryCareDoctor = models.ForeignKey('Account', null=True, related_name="profiles_primarycaredoctor")
     limit_users = models.IntegerField(default=20)
+    totat_patients = models.IntegerField(default=0)
+    hide = models.BooleanField(default=False)
 
     def get_populated_fields(self):
         """
@@ -302,7 +304,7 @@ class Notification(models.Model):
     sent_timestamp = models.DateTimeField(auto_now_add=True)
     read_timestamp = models.DateTimeField(blank=True, null=True)
 
-
+DEFAULT_DOCTOR_ID = 1
 class Admission(models.Model):
 
     ADMISSIONREASON = (
@@ -323,6 +325,7 @@ class Admission(models.Model):
     description = models.CharField(blank=True, max_length=1000)
     hospital = models.ForeignKey(Hospital)
     active = models.BooleanField(default=True)
+    doctor = models.ForeignKey(Account, default=DEFAULT_DOCTOR_ID)
 
 
 class Prescription(models.Model):

@@ -110,7 +110,7 @@ def register_admit_user(reason, email, firstname , lastname, hospital):
     )
     admission.save()
     logger.log(Action.ACTION_ACCOUNT, "Account registered", account)
-    return user
+    return admission
 
 
 
