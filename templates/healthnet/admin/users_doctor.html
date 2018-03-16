@@ -15,7 +15,8 @@
             <th>First name</th>
             <th>Last name</th>
             <th>Role</th>
-            <th>Allowed Patient</th>
+            <th>Allowed Patients</th>
+            <th>Total Patients</th>
         </thead>
         <tbody>
             {% for account in query %}
@@ -54,6 +55,7 @@
                           <input class="btn btn-primary" type="submit" value="Save"/>
                       </form>
                     </td>
+                    <td>{{ account.profile.totat_patients }}</td>
                 </tr>
             {% endfor %}
         </tbody>

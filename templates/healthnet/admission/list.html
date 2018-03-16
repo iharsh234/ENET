@@ -11,7 +11,8 @@
     <table id="datatable" class="table table-hover table-striped table-bordered">
         <thead>
             <th>Patient</th>
-            <!-- <th>Reason</th> -->
+            <th>UserID</th>
+            <th>Reason</th>
             <th>Passcode</th>
             <th>Time</th>
             <th>Time of Discharge</th>
@@ -23,7 +24,8 @@
             {% for admission in query %}
                 <tr>
                     <td>{{ admission.account.profile }}</td>
-                    <!-- <td>{{ admission.reason }}</td> -->
+                    <td>{{ admission.account.user.username }}</td>
+                    <td>{{ admission.reason }}</td>
                     <td>{{ admission.account.profile.insurance }}</td>
                     <td>{{ admission.timestamp }}</td>
                     <td>{{ admission.discharged_timestamp }}</td>
