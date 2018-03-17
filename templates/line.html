@@ -14,11 +14,23 @@
     {% endblock %}
     <select name="Games" onchange="location = this.value;">
          <option value=""> ALL GAME</option>
-         {% for i in "xxxxxxxxxx" %}
+         <!-- {% for i in "xxxxxxxxxx" %}
             {% if forloop.counter0 != 0 %}
                 <option value='?q={{ forloop.counter0 }}' >GAME  {{ forloop.counter0 }} </option>
             {% endif %}
-         {% endfor %}
+         {% endfor %} -->
+         <option value='?q=1' >Peripheral awareness </option>
+         <option value='?q=2' >Find the number  </option>
+         <option value='?q=3' >Pursuits </option>
+         <option value='?q=4' >Directionality</option>
+         <option value='?q=5' >Jump Saccades </option>
+         <option value='?q=6' >Aim the target </option>
+         <option value='?q=7' >Spatial orientation</option>
+         <option value='?q=8' >Smooth Pursuits </option>
+         <option value='?q=9' >Picture Saccades</option>
+         <option value='?q=10' >Memory Match</option>
+         <option value='?q=11' >Concentration</option>
+         <option value='?q=12' >Stereo Perception </option>
     </select>
     <div class="container">
         <div class="row">
